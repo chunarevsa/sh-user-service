@@ -1,6 +1,6 @@
-package com.smarthome.userservice.repo
+package com.smarthome.shuserservice.repo
 
-import com.smarthome.userservice.entity.Role
+import com.smarthome.shuserservice.entity.Role
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface RoleRepository : JpaRepository<Role, Long> {

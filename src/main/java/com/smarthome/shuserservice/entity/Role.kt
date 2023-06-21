@@ -1,7 +1,8 @@
-package com.smarthome.userservice.entity
+package com.smarthome.shuserservice.entity
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import org.hibernate.annotations.NaturalId
+import java.util.*
 import javax.persistence.*
 
 @Entity
@@ -17,7 +18,7 @@ class Role(
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     @JsonIgnore
-    var users: MutableSet<User> = HashSet()
+    var userOlds: MutableSet<UserOld> = HashSet()
 
 ) {
     fun isAdminRole(): Boolean = this.role == ERoleName.ROLE_ADMIN

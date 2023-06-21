@@ -1,6 +1,5 @@
-package com.smarthome.userservice.dto
+package com.smarthome.shuserservice.dto
 
-// TODO add restrictions
 data class CreateUserRequest(
     val firstName: String,
     val lastName: String,

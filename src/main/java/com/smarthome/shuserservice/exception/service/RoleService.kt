@@ -1,8 +1,8 @@
-package com.smarthome.userservice.service
+package com.smarthome.shuserservice.exception.service
 
-import com.smarthome.userservice.entity.ERoleName
-import com.smarthome.userservice.entity.Role
-import com.smarthome.userservice.repo.RoleRepository
+import com.smarthome.shuserservice.entity.ERoleName
+import com.smarthome.shuserservice.entity.Role
+import com.smarthome.shuserservice.repo.RoleRepository
 import org.springframework.stereotype.Service
 
 @Service

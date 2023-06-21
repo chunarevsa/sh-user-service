@@ -1,9 +1,6 @@
-package com.smarthome.userservice.repo
+package com.smarthome.shuserservice.repo
 
-import com.smarthome.userservice.entity.User
+import com.smarthome.shuserservice.entity.UserOld
 import org.springframework.data.jpa.repository.JpaRepository
-import java.util.*
 
-interface UserRepository : JpaRepository<User, Long> {
-    override fun findById(id: Long): Optional<User>
-}
+interface UserRepository : JpaRepository<UserOld, Long>

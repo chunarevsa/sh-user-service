@@ -1,4 +1,4 @@
-package com.smarthome.userservice.util
+package com.smarthome.shuserservice.util
 
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus

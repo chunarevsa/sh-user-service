@@ -1,6 +1,5 @@
-package com.smarthome.userservice.dto
+package com.smarthome.shuserservice.dto
 
 data class EditRoleRequest(
-    var userId: Long,
     var role: String,
 )

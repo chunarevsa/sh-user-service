@@ -1,4 +1,4 @@
-package com.smarthome.userservice.entity
+package com.smarthome.shuserservice.entity
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import javax.persistence.*
@@ -6,13 +6,13 @@ import javax.persistence.*
 @Entity
 class Account(
     @Id
-    @Column(name = "ACCOUNT_ID")
+    @Column(name = "account_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
     @JsonIgnore
     @OneToOne(optional = false, mappedBy = "profile")
-    val user: User? = null,
+    val userOld: UserOld? = null,
 
     var amount: Long = 0L,
 )

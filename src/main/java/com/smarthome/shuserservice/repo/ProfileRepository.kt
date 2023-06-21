@@ -1,6 +1,7 @@
-package com.smarthome.userservice.repo
+package com.smarthome.shuserservice.repo
 
-import com.smarthome.userservice.entity.Profile
 import org.springframework.data.jpa.repository.JpaRepository
 
-interface ProfileRepository : JpaRepository<Profile, Long>
+interface ProfileRepository : JpaRepository<Profile, Long> {
+
+}
