@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "profile")
 public class Profile {
 
     @Id
@@ -20,11 +21,12 @@ public class Profile {
 
     @JsonIgnore
     @OneToOne(optional = false, mappedBy = "profile")
-    private UserOld user;
+    private User user;
 
-    public Profile(String firstName, String lastName) {
+    public Profile(String firstName, String lastName, User user) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.user = user;
     }
 
     public Profile() {
@@ -54,17 +56,17 @@ public class Profile {
         this.lastName = lastName;
     }
 
-    public UserOld getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserOld user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
     @Override
     public String toString() {
-        return "Profile2{" +
+        return "Profile{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
