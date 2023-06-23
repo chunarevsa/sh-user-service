@@ -6,7 +6,7 @@ import com.smarthome.shuserservice.entity.Account
 import com.smarthome.shuserservice.entity.ERoleName
 import com.smarthome.shuserservice.entity.Profile
 import com.smarthome.shuserservice.entity.User
-import com.smarthome.shuserservice.exception.NotFoundUserException
+import com.smarthome.shuserservice.exception.NotFoundException
 import com.smarthome.shuserservice.repo.UserRepository
 import org.springframework.stereotype.Service
 import java.util.*
@@ -35,7 +35,7 @@ class UserService(
     fun updateUser(userId: Long, req: UpdateUserRequest): User {
         val user = userRepository.findById(userId)
             .map { it }
-            .orElseThrow { NotFoundUserException(userId) }
+            .orElseThrow { NotFoundException("user", userId.toString()) }
         req.firstName.let { user.profile.firstName = it }
         req.lastName.let { user.profile.lastName = it }
         req.password.let { user.password = it }
@@ -43,13 +43,15 @@ class UserService(
         return userRepository.save(user)
     }
 
-    fun deactivateUser(id: Long) {
-        userRepository.findById(id).map { it }.orElseThrow { NotFoundUserException(id) }
+    fun deactivateUser(userId: Long) {
+        val user = userRepository.findById(userId).map { it }.orElseThrow { NotFoundException("user", userId.toString()) }
+        user.isActive = false
+        userRepository.save(user)
     }
 
-    fun updateRole(userId: Long, role: String) {
-        userRepository.findById(userId).map { it.addRole(roleService.getRoleByRoleName(ERoleName.valueOf(role))) }
-            .orElseThrow { NotFoundUserException(userId) } // TODO check: Which exception does it throw
+    fun addRole(userId: Long, role: String) {
+        userRepository.findById(userId).map { it.addRole(roleService.getRoleByRoleName(role)) }
+            .orElseThrow { NotFoundException("user", userId.toString()) }
     }
 
 }

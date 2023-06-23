@@ -1,7 +1,7 @@
 package com.smarthome.shuserservice.controller
 
 import com.smarthome.shuserservice.dto.CreateUserRequest
-import com.smarthome.shuserservice.dto.EditRoleRequest
+import com.smarthome.shuserservice.dto.AddRoleRequest
 import com.smarthome.shuserservice.dto.UpdateUserRequest
 import com.smarthome.shuserservice.entity.User
 import com.smarthome.shuserservice.service.UserService
@@ -71,10 +71,10 @@ class UserController(
     }
 
     // TODO add @Valid
-    @PostMapping("/{id}/updateRole")
-    fun updateUserRole(@PathVariable id: Long, @RequestBody req: EditRoleRequest): ResponseEntity<Void> {
-//        log.debug("REST request to update role : {}, {}", id, req)
-        userService.updateRole(id, req.role)
+    @PostMapping("/{id}/addRole")
+    fun addUserRole(@PathVariable id: Long, @RequestBody req: AddRoleRequest): ResponseEntity<Void> {
+        log.debug("REST request to update role : {}, {}", id, req)
+        userService.addRole(id, req.role!!)
         return ResponseEntity.noContent().headers(
             HeaderUtil.createEntityUpdateRoleAlert(
                 applicationName, false, ENTITY_NAME, id.toString()
