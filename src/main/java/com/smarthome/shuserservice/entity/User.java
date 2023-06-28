@@ -1,10 +1,7 @@
 package com.smarthome.shuserservice.entity;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -40,26 +37,15 @@ public class User extends DateAudit {
     @JoinColumn(name = "account_id", unique = true)
     private Account account;
 
+    /**
+     * Map<SKU, amount>
+     */
     @OneToMany (cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "user_id")
-    private List<Purchase> purchases = new ArrayList<>();
+    Set<Item> items = new HashSet<>();
 
     public User() {
         super();
-    }
-
-    public User(String login,
-                String password,
-                Boolean isEmailVerified,
-                Set<Role> roles,
-                Profile profile) {
-        this.isActive = true;
-        this.login = login;
-        this.password = password;
-        this.isEmailVerified = isEmailVerified;
-        this.roles = roles;
-        this.profile = profile;
-        this.account = new Account();
     }
 
     public void addRole(Role role) {
@@ -139,12 +125,12 @@ public class User extends DateAudit {
         this.account = account;
     }
 
-    public List<Purchase> getPurchases() {
-        return purchases;
+    public Set<Item> getItems() {
+        return items;
     }
 
-    public void setPurchases(List<Purchase> purchases) {
-        this.purchases = purchases;
+    public void setItems(Set<Item> items) {
+        this.items = items;
     }
 
     @Override
@@ -158,7 +144,7 @@ public class User extends DateAudit {
                 ", roles=" + roles +
                 ", profile=" + profile +
                 ", account=" + account +
-                ", purchases=" + purchases +
+                ", items=" + items +
                 '}';
     }
 }

@@ -15,7 +15,9 @@ class RoleService(
     @PostConstruct // TODO clear it after adding migration
     fun addRoles() {
         val roleFromDb = roleRepo.findAll().map { it.role.name }
-        ERoleName.values().forEach { if (!roleFromDb.contains(it.name)) roleRepo.save(Role(it)) }
+        ERoleName.values().forEach { if (!roleFromDb.contains(it.name)) roleRepo.save(
+            Role(it)
+        ) }
     }
 
     fun getRoleByRoleName(roleName: ERoleName) : Role {

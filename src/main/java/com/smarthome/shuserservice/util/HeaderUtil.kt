@@ -23,14 +23,6 @@ object HeaderUtil {
 
     }
 
-    fun createEntityUpdateRoleAlert(
-        applicationName: String, enableTranslation: Boolean, entityName: String, param: String
-    ): HttpHeaders {
-        val message =
-            if (enableTranslation) "$applicationName.$entityName.updated" else "A $entityName is updated with identifier $param"
-        return createAlert(applicationName, message, param)
-    }
-
     fun createEntityUpdateAlert(
         applicationName: String, enableTranslation: Boolean, entityName: String, param: String
     ): HttpHeaders {
@@ -44,6 +36,22 @@ object HeaderUtil {
     ): HttpHeaders {
         val message =
             if (enableTranslation) "$applicationName.$entityName.deactivated" else "A $entityName is deactivated with identifier $param"
+        return createAlert(applicationName, message, param)
+    }
+
+    fun createEntityUpdateRoleAlert(
+        applicationName: String, enableTranslation: Boolean, entityName: String, param: String
+    ): HttpHeaders {
+        val message =
+            if (enableTranslation) "$applicationName.$entityName.updated" else "A $entityName is updated with identifier $param"
+        return createAlert(applicationName, message, param)
+    }
+
+    fun createEntityAddItemsAlert(
+        applicationName: String, enableTranslation: Boolean, entityName: String, param: String
+    ): HttpHeaders {
+        val message =
+            if (enableTranslation) "$applicationName.$entityName.items" else "A $entityName is update item list $param"
         return createAlert(applicationName, message, param)
     }
 

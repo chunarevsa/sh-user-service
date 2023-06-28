@@ -1,8 +1,10 @@
 package com.smarthome.shuserservice.controller
 
+import com.smarthome.shuserservice.dto.AddItemsRequest
 import com.smarthome.shuserservice.dto.CreateUserRequest
 import com.smarthome.shuserservice.dto.AddRoleRequest
 import com.smarthome.shuserservice.dto.UpdateUserRequest
+import com.smarthome.shuserservice.entity.Item
 import com.smarthome.shuserservice.entity.User
 import com.smarthome.shuserservice.service.UserService
 import com.smarthome.shuserservice.util.HeaderUtil
@@ -74,12 +76,29 @@ class UserController(
     @PostMapping("/{id}/addRole")
     fun addUserRole(@PathVariable id: Long, @RequestBody req: AddRoleRequest): ResponseEntity<Void> {
         log.debug("REST request to update role : {}, {}", id, req)
-        userService.addRole(id, req.role!!)
+        userService.addRole(id, req.role!!) // TODO: clear !!
         return ResponseEntity.noContent().headers(
             HeaderUtil.createEntityUpdateRoleAlert(
                 applicationName, false, ENTITY_NAME, id.toString()
             )
         ).build()
+    }
+
+    @PostMapping("/{id}/addItems")
+    fun addItems(@PathVariable id: Long, @RequestBody req: AddItemsRequest): ResponseEntity<Void> {
+        log.debug("REST request to add items : {}, {}", id, req)
+        userService.addItems(id, req)
+        return ResponseEntity.noContent().headers(
+            HeaderUtil.createEntityAddItemsAlert(
+                applicationName, false, ENTITY_NAME, id.toString()
+            )
+        ).build()
+    }
+
+    @GetMapping("/{id}/getItems")
+    fun getUserItems(@PathVariable id: Long): MutableSet<Item> {
+        log.debug("REST request to getting user items : {}", id)
+        return userService.getItems(id)
     }
 
 }
