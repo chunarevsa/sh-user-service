@@ -59,13 +59,12 @@ class UserService(
         val user = findUser(userId)
         val item = user.items.find { it.sku == req.sku }
         if (item != null) {
-            item.amount =+ req.amount
+            item.amount = item.amount.plus(req.amount)
         } else user.items.add(Item().apply {
             this.sku = req.sku
             this.amount = req.amount
             this.user = user
         })
-
         userRepository.save(user)
     }
 

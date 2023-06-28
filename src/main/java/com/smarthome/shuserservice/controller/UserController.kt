@@ -96,7 +96,7 @@ class UserController(
     }
 
     @GetMapping("/{id}/getItems")
-    fun getUserItems(@PathVariable id: Long): MutableSet<Item> {
+    fun getItems(@PathVariable id: Long): MutableSet<Item> {
         log.debug("REST request to getting user items : {}", id)
         return userService.getItems(id)
     }
