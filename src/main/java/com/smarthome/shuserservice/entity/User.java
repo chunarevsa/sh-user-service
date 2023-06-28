@@ -1,7 +1,9 @@
 package com.smarthome.shuserservice.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -37,6 +39,10 @@ public class User extends DateAudit {
     @OneToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id", unique = true)
     private Account account;
+
+    @OneToMany (cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "user_id")
+    private List<Purchase> purchases = new ArrayList<>();
 
     public User() {
         super();
@@ -133,6 +139,14 @@ public class User extends DateAudit {
         this.account = account;
     }
 
+    public List<Purchase> getPurchases() {
+        return purchases;
+    }
+
+    public void setPurchases(List<Purchase> purchases) {
+        this.purchases = purchases;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -140,7 +154,11 @@ public class User extends DateAudit {
                 ", isActive=" + isActive +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
+                ", isEmailVerified=" + isEmailVerified +
                 ", roles=" + roles +
+                ", profile=" + profile +
+                ", account=" + account +
+                ", purchases=" + purchases +
                 '}';
     }
 }
