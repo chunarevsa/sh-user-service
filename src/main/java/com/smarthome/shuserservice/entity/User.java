@@ -42,7 +42,7 @@ public class User extends DateAudit {
      */
     @OneToMany (cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "user_id")
-    Set<Item> items = new HashSet<>();
+    Set<ItemUnit> itemUnits = new HashSet<>();
 
     public User() {
         super();
@@ -125,12 +125,12 @@ public class User extends DateAudit {
         this.account = account;
     }
 
-    public Set<Item> getItems() {
-        return items;
+    public Set<ItemUnit> getItems() {
+        return itemUnits;
     }
 
-    public void setItems(Set<Item> items) {
-        this.items = items;
+    public void setItems(Set<ItemUnit> itemUnits) {
+        this.itemUnits = itemUnits;
     }
 
     @Override
@@ -144,7 +144,7 @@ public class User extends DateAudit {
                 ", roles=" + roles +
                 ", profile=" + profile +
                 ", account=" + account +
-                ", items=" + items +
+                ", items=" + itemUnits +
                 '}';
     }
 }

@@ -4,7 +4,7 @@ import com.smarthome.shuserservice.dto.AddItemsRequest
 import com.smarthome.shuserservice.dto.CreateUserRequest
 import com.smarthome.shuserservice.dto.AddRoleRequest
 import com.smarthome.shuserservice.dto.UpdateUserRequest
-import com.smarthome.shuserservice.entity.Item
+import com.smarthome.shuserservice.entity.ItemUnit
 import com.smarthome.shuserservice.entity.User
 import com.smarthome.shuserservice.service.UserService
 import com.smarthome.shuserservice.util.HeaderUtil
@@ -12,6 +12,7 @@ import com.smarthome.shuserservice.util.ResponseUtil
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.net.URI
@@ -72,6 +73,12 @@ class UserController(
             ).build()
     }
 
+    @PostMapping("/isExists")
+    fun userExists(@RequestBody userId: Long) : ResponseEntity<Boolean> {
+        log.debug("REST request to exists user : {}", userId)
+        return ResponseEntity(userService.getUser(userId).isPresent, HttpStatus.OK)
+    }
+
     // TODO add @Valid
     @PostMapping("/{id}/addRole")
     fun addUserRole(@PathVariable id: Long, @RequestBody req: AddRoleRequest): ResponseEntity<Void> {
@@ -96,7 +103,7 @@ class UserController(
     }
 
     @GetMapping("/{id}/getItems")
-    fun getItems(@PathVariable id: Long): MutableSet<Item> {
+    fun getItems(@PathVariable id: Long): MutableSet<ItemUnit> {
         log.debug("REST request to getting user items : {}", id)
         return userService.getItems(id)
     }

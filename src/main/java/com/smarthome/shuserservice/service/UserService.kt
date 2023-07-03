@@ -31,6 +31,8 @@ class UserService(
             this.account = Account(this)
         }
         user.addRole(roleService.getRoleByRoleName(ERoleName.ROLE_USER))
+        // TODO: create Cart (cart-service) Acync
+
         return userRepository.save(user)
     }
 
@@ -46,6 +48,8 @@ class UserService(
     fun deactivateUser(userId: Long) {
         val user = findUser(userId)
         user.isActive = false
+        // TODO: add deactivating items and order, delete cart
+
         userRepository.save(user)
     }
 
@@ -57,10 +61,15 @@ class UserService(
 
     fun addItems(userId: Long, req: AddItemsRequest) {
         val user = findUser(userId)
+        // TODO: add checking item
+        // TODO: add checking order status
+        // TODO: add checking payment status
+        // TODO: add clearing booking item from query
+
         val item = user.items.find { it.sku == req.sku }
         if (item != null) {
             item.amount = item.amount.plus(req.amount)
-        } else user.items.add(Item().apply {
+        } else user.items.add(ItemUnit().apply {
             this.sku = req.sku
             this.amount = req.amount
             this.user = user
@@ -68,7 +77,7 @@ class UserService(
         userRepository.save(user)
     }
 
-    fun getItems(userId: Long): MutableSet<Item> = findUser(userId).items
+    fun getItems(userId: Long): MutableSet<ItemUnit> = findUser(userId).items
 
     private fun findUser(userId: Long): User {
         return userRepository.findById(userId).map { it }.orElseThrow {
