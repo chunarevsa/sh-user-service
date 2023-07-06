@@ -5,10 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "item_unit")
-public class ItemUnit {
+public class CartItemUnit {
     @Id
-    @Column(name = "item_id")
+    @Column(name = "cart_item_unit_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -18,8 +17,16 @@ public class ItemUnit {
 
     @JsonIgnore
     @ManyToOne (fetch = FetchType.LAZY)
-    @JoinColumn (name = "user_id", insertable = false, updatable = false)
-    private User user;
+    @JoinColumn (name = "cart_id", insertable = false, updatable = false)
+    private Cart cart;
+
+    public CartItemUnit() {
+    }
+
+    public CartItemUnit(String sku, Long amount) {
+        this.sku = sku;
+        this.amount = amount;
+    }
 
     public Long getId() {
         return id;
@@ -45,11 +52,21 @@ public class ItemUnit {
         this.amount = amount;
     }
 
-    public User getUser() {
-        return user;
+    public Cart getCart() {
+        return cart;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    @Override
+    public String toString() {
+        return "ItemUnit{" +
+                "id=" + id +
+                ", sku='" + sku + '\'' +
+                ", amount=" + amount +
+                ", cart=" + cart +
+                '}';
     }
 }

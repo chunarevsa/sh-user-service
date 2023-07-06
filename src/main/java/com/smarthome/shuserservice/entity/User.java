@@ -44,6 +44,10 @@ public class User extends DateAudit {
     @JoinColumn(name = "user_id")
     Set<ItemUnit> itemUnits = new HashSet<>();
 
+
+    private Long cartId;
+
+
     public User() {
         super();
     }
@@ -133,6 +137,14 @@ public class User extends DateAudit {
         this.itemUnits = itemUnits;
     }
 
+    public Long getCartId() {
+        return cartId;
+    }
+
+    public void setCartId(Long cartId) {
+        this.cartId = cartId;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -144,7 +156,8 @@ public class User extends DateAudit {
                 ", roles=" + roles +
                 ", profile=" + profile +
                 ", account=" + account +
-                ", items=" + itemUnits +
+                ", itemUnits=" + itemUnits +
+                ", cartId=" + cartId +
                 '}';
     }
 }

@@ -1,19 +1,27 @@
 package com.smarthome.shuserservice.service
 
 import com.smarthome.shuserservice.dto.AddItemsRequest
+import com.smarthome.shuserservice.dto.CreateCartRequest
 import com.smarthome.shuserservice.dto.CreateUserRequest
 import com.smarthome.shuserservice.dto.UpdateUserRequest
 import com.smarthome.shuserservice.entity.*
 import com.smarthome.shuserservice.exception.NotFoundException
 import com.smarthome.shuserservice.repo.UserRepository
+import com.smarthome.shuserservice.util.feign.CartFeignClient
+import com.smarthome.shuserservice.util.webclient.CartWebClientBuilder
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class UserService(
     private val userRepository: UserRepository,
-    private val roleService: RoleService
+    private val roleService: RoleService,
+    private val cartWebClientBuilder: CartWebClientBuilder,
+    private val cartFeignClient: CartFeignClient
 ) {
+    private val log: Logger = LoggerFactory.getLogger(UserService::class.java)
 
     fun getUser(userId: Long): Optional<User> = userRepository.findById(userId)
 
@@ -31,9 +39,17 @@ class UserService(
             this.account = Account(this)
         }
         user.addRole(roleService.getRoleByRoleName(ERoleName.ROLE_USER))
-        // TODO: create Cart (cart-service) Acync
+        val savedUser = userRepository.save(user)
 
-        return userRepository.save(user)
+        cartFeignClient.createOrUpdateCart(CreateCartRequest(savedUser.id,null))
+
+//        cartWebClientBuilder.createCart(savedUser.id).subscribe {
+//            savedUser.cartId = it.id
+//            userRepository.save(savedUser)
+//        }
+
+        return savedUser
+
     }
 
     fun updateUser(userId: Long, req: UpdateUserRequest): User {
@@ -48,7 +64,11 @@ class UserService(
     fun deactivateUser(userId: Long) {
         val user = findUser(userId)
         user.isActive = false
+        user.cartId = null
         // TODO: add deactivating items and order, delete cart
+        cartWebClientBuilder.deleteCart(userId).subscribe {
+            log.info("Cart with userId:${userId} is deleted")
+        }
 
         userRepository.save(user)
     }

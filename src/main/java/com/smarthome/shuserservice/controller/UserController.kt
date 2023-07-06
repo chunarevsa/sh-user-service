@@ -9,6 +9,7 @@ import com.smarthome.shuserservice.entity.User
 import com.smarthome.shuserservice.service.UserService
 import com.smarthome.shuserservice.util.HeaderUtil
 import com.smarthome.shuserservice.util.ResponseUtil
+import com.smarthome.shuserservice.util.feign.CartFeignClient
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
@@ -22,7 +23,7 @@ import java.net.URI
 class UserController(
     private val userService: UserService,
     @Value("\${spring.application.name}")
-    private val applicationName: String
+    private val applicationName: String,
 ) {
     private val log: Logger = LoggerFactory.getLogger(UserController::class.java)
 
