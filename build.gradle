@@ -18,17 +18,19 @@ ext {
 }
 
 dependencies {
+    // Spring Boot
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
-    implementation 'org.springframework.cloud:spring-cloud-starter-feign:1.4.7.RELEASE'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    // Spring Cloud
     implementation 'org.springframework.cloud:spring-cloud-starter-config'
-
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation 'org.springframework.cloud:spring-cloud-starter-feign:1.4.7.RELEASE'
+    implementation 'org.springframework.cloud:spring-cloud-starter-stream-rabbit:4.0.1'
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-hystrix:2.2.10.RELEASE'
 
     // Kotlin
