@@ -1,8 +1,13 @@
 package com.smarthome.shuserservice.entity;
 
+import org.springframework.messaging.Message;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Sinks;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 @Entity
 public class Cart {
@@ -16,6 +21,12 @@ public class Cart {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "cart_id")
     private List<CartItemUnit> items = new ArrayList<>();
+
+    private Sinks.Many<Message<Long>> messageSender = Sinks.many().multicast().directAllOrNothing();
+
+    public Supplier<Flux<Message<Long>>> newUserActionProduce() {
+        return () -> messageSender.asFlux();
+    }
 
     public Long getId() {
         return id;

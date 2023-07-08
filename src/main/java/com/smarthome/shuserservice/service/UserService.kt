@@ -1,18 +1,14 @@
 package com.smarthome.shuserservice.service
 
 import com.smarthome.shuserservice.dto.AddItemsRequest
-import com.smarthome.shuserservice.dto.CreateCartRequest
 import com.smarthome.shuserservice.dto.CreateUserRequest
 import com.smarthome.shuserservice.dto.UpdateUserRequest
 import com.smarthome.shuserservice.entity.*
 import com.smarthome.shuserservice.exception.NotFoundException
 import com.smarthome.shuserservice.repo.UserRepository
-import com.smarthome.shuserservice.util.feign.CartFeignClient
-import com.smarthome.shuserservice.util.mq.MessageProducer
 import com.smarthome.shuserservice.util.webclient.CartWebClientBuilder
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -21,10 +17,7 @@ class UserService(
     private val userRepository: UserRepository,
     private val roleService: RoleService,
     private val cartWebClientBuilder: CartWebClientBuilder,
-    @Qualifier("com.smarthome.shuserservice.util.feign.CartFeignClient")
-    private val cartFeignClient: CartFeignClient,
-    private val messageProducer: MessageProducer
-    ) {
+) {
     private val log: Logger = LoggerFactory.getLogger(UserService::class.java)
 
     fun getUser(userId: Long): Optional<User> = userRepository.findById(userId)
@@ -43,13 +36,6 @@ class UserService(
             this.account = Account(this)
         }
         user.addRole(roleService.getRoleByRoleName(ERoleName.ROLE_USER))
-
-//        cartFeignClient.createOrUpdateCart(CreateCartRequest(savedUser.id,null))
-
-//        cartWebClientBuilder.createCart(savedUser.id).subscribe {
-//            savedUser.cartId = it.id
-//            userRepository.save(savedUser)
-//        }
 
         return userRepository.save(user)
 

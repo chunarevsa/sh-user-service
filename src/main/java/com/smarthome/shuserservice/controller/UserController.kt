@@ -6,8 +6,7 @@ import com.smarthome.shuserservice.entity.User
 import com.smarthome.shuserservice.service.UserService
 import com.smarthome.shuserservice.util.HeaderUtil
 import com.smarthome.shuserservice.util.ResponseUtil
-import com.smarthome.shuserservice.util.feign.CartFeignClient
-import com.smarthome.shuserservice.util.mq.MessageProducer
+import com.smarthome.shuserservice.util.mq.func.MessageFuncActions
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
@@ -22,7 +21,7 @@ class UserController(
     private val userService: UserService,
     @Value("\${spring.application.name}")
     private val applicationName: String,
-    private val messageProducer: MessageProducer,
+    private val messageFuncActions: MessageFuncActions
 ) {
     private val log: Logger = LoggerFactory.getLogger(UserController::class.java)
 
@@ -39,7 +38,7 @@ class UserController(
     fun createUser(@RequestBody req: CreateUserRequest): ResponseEntity<User> {
         log.debug("REST request to create $ENTITY_NAME : {}", req)
         val user = userService.createUser(req)
-        messageProducer.newUserAction(CreateCartRequest(user.id, null))
+        messageFuncActions.sendNewUserMessage(CreateCartRequest(user.id, null))
         return ResponseEntity.created(URI("/api/user/${user.id}"))
             .headers(
                 HeaderUtil.createEntityCreationAlert(
@@ -75,7 +74,7 @@ class UserController(
     }
 
     @PostMapping("/isExists")
-    fun userExists(@RequestBody userId: Long) : ResponseEntity<Boolean> {
+    fun userExists(@RequestBody userId: Long): ResponseEntity<Boolean> {
         log.debug("REST request to exists user : {}", userId)
         return ResponseEntity(userService.getUser(userId).isPresent, HttpStatus.OK)
     }
