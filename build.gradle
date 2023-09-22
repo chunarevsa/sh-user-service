@@ -5,7 +5,7 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.6.10'
 }
 
-group = 'com.smarthome'
+group = 'com.socialhobbies'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
